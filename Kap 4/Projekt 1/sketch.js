@@ -4,19 +4,19 @@ let speed = 2;
 let d = 30;
 let a = speed;
 let b = 0;
-let kat_speed = 2;
+let kat_speed = 1;
 let kat_x;
 let kat_y;
 let kat_d = 30;
-let kat_a = 2;
-let kat_b = 2;
 let death = false;
 let visible = true;
 let ost_x;
 let ost_y;
 let ost_d = 10;
-let points = 0;
+let points = 4;
 let img;
+let levelUp = false;
+let level = 1;
 
 function preload() {
   img = loadImage("Mus.png");
@@ -61,7 +61,13 @@ function draw() {
   fill(0);
   textSize(10);
   text("Points = " + points, 10, 15);
-
+  text("Level " + level, width - 50, 10);
+  if (points == 5) {
+    levelUp = true;
+  }
+  if (levelUp) {
+    LevelUp();
+  }
   if (death == true) {
     Death();
   }
@@ -76,8 +82,23 @@ function Death() {
   textAlign(CENTER, CENTER);
   textSize(height / 10);
   text("You died", width / 2, height / 2);
+  textSize(15);
+  text("Press SPACE to try again", width / 2, height / 2 + 50);
   visible = false;
   points = 0;
+}
+function LevelUp() {
+  fill(100, 250, 100, 200);
+  rect(0, 0, width, height);
+  fill(0, 0, 0);
+  textAlign(CENTER, CENTER);
+  textSize(height / 10);
+  text("Level up", width / 2, height / 2);
+  textSize(15);
+  text("Press SPACE to continue", width / 2, height / 2 + 50);
+  visible = false;
+  points = 0;
+  level++;
 }
 function overlap() {
   if (sqrt(sq(kat_x - x) + sq(kat_y - y)) < d / 2 + kat_d / 2) {
@@ -127,9 +148,17 @@ function keyPressed() {
     a = speed;
   }
   if (keyCode === 32) {
-    death = false;
-    visible = true;
-    x = random(0 + kat_d / 2, width - kat_d / 2);
-    y = random(0 + kat_d / 2, height - kat_d / 2);
+    if (death == true) {
+      death = false;
+      visible = true;
+      x = random(0 + kat_d / 2, width - kat_d / 2);
+      y = random(0 + kat_d / 2, height - kat_d / 2);
+    }
+    if (levelUp == true) {
+      levelUp = false;
+      visible = true;
+      x = random(0 + kat_d / 2, width - kat_d / 2);
+      y = random(0 + kat_d / 2, height - kat_d / 2);
+    }
   }
 }
